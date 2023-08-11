@@ -1,0 +1,40 @@
+import requests
+import random
+import string
+import time
+
+print("By AushiroEnLive\n")
+time.sleep(0.2)
+
+num = int(input('Combien de Nitro veux tu générer ? '))
+
+with open("Aushiro.txt", "w", encoding='utf-8') as file:
+    print("Les nitros sont en cours de génération")
+
+    start = time.time()
+
+    for i in range(num):
+        code = "".join(random.choices(
+            string.ascii_uppercase + string.digits + string.ascii_lowercase,
+            k = 16
+        ))
+
+        file.write(f"https://discord.gift/{code}\n")
+
+    print(f"J'ai générer {num} nitro codes ! \n")
+
+with open("Aushiro.txt") as file:
+    for line in file.readlines():
+        nitro = line.strip("\n")
+
+        url = "https://discordapp.com/api/v6/entitlements/gift-codes/" + nitro + "?with_application=false&with_subscription_plan=true"
+
+        r = requests.get(url)
+
+        if r.status_code == 200:
+            print(f" Nombre de Nitro Valide | {nitro} ")
+            break
+        else:
+            print(f" Nombre de Nitro Invalide | {nitro} ")
+
+input("\nVeuillez Appuyez sur entrer pour fermer le programme")
